@@ -1,17 +1,29 @@
-import cors from 'cors';
-import express from 'express';
+import app from './app';
+import { Server } from 'http';
 
-const app = express();
+let server: Server;
 
-/*================ MIDDLEWARES ================*/
-app.use(cors());
+const main = async () => {
+  server = app.listen(5000, () =>
+    console.log(`pure plus listening on http://localhost:${5000}`),
+  );
 
-/*================ PARSER ================*/
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  const exitHandler = () => {
+    if (server) {
+      server.close(() => {
+        console.log('server closed');
+      });
+    }
+    process.exit(1);
+  };
 
-app.get('/test', (_, res) => {
-  res.json('Pure Plus Main Backend Server On Fire 🔥 💧 🔥');
-});
+  const unexpectedErrorHandler = (error: unknown) => {
+    console.error(error);
+    exitHandler();
+  };
 
-app.listen(5000, () => console.log(`Server running on http://localhost:5000`));
+  process.on('uncaughtException', unexpectedErrorHandler);
+  process.on('unhandledRejection', unexpectedErrorHandler);
+};
+
+main();
