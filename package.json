@@ -4,6 +4,7 @@
   "description": "Pure plaus main backend server for handling all backend realted functionality.",
   "main": "src/index.ts",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
@@ -41,6 +42,7 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
-    "prettier": "^3.3.2"
+    "prettier": "^3.3.2",
+    "ts-node-dev": "^2.0.0"
   }
 }
