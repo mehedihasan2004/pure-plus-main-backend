@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Pure plaus main backend server for handling all backend realted functionality.",
   "main": "src/index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [
     "pure",
     "plus",
@@ -15,5 +13,8 @@
     "patient"
   ],
   "author": "Mehedi Hasan",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "20.15.0"
+  }
 }
