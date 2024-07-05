@@ -1,11 +1,12 @@
 import app from './app';
+import env from './env';
 import { Server } from 'http';
 
 let server: Server;
 
 const main = async () => {
-  server = app.listen(5000, () =>
-    console.log(`pure plus listening on http://localhost:${5000}`),
+  server = app.listen(env.PORT, () =>
+    console.log(`pure plus listening on http://localhost:${env.PORT}`),
   );
 
   const exitHandler = () => {
