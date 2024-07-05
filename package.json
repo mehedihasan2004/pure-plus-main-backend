@@ -15,6 +15,7 @@
   "author": "Mehedi Hasan",
   "license": "ISC",
   "engines": {
-    "node": "20.15.0"
+    "node": "20.15.0",
+    "npm": "10.8.1"
   }
 }
