@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Pure plaus main backend server for handling all backend realted functionality.",
   "main": "src/index.ts",
-  "scripts": {},
+  "scripts": {
+    "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "lint:fix": "eslint . --fix",
+    "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "prettier:fix": "prettier --write .",
+    "lint-prettier": "npm run lint:check && npm run prettier:check"
+  },
   "keywords": [
     "pure",
     "plus",
@@ -14,6 +20,9 @@
   ],
   "author": "Mehedi Hasan",
   "license": "ISC",
+  "lint-staged": {
+    "src/**/*.ts": "npm run lint-prettier"
+  },
   "engines": {
     "node": "20.15.0",
     "npm": "10.8.1"
@@ -30,6 +39,7 @@
     "@typescript-eslint/parser": "^7.15.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.2"
   }
 }
