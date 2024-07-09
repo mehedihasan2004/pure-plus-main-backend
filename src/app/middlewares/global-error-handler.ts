@@ -4,9 +4,11 @@
 
 import env from '../../env';
 import { ZodError } from 'zod';
+import { Prisma } from '@prisma/client';
 import ApiError from '../../errors/api-error';
 import handleZodError from '../../errors/handle-zod-error';
 import { GenericErrorMessage } from '../../interfaces/common';
+import handlePrismaClientError from '../../errors/handle-prisma-client-error';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 
 const globalErrorHandler: ErrorRequestHandler = (
@@ -24,6 +26,12 @@ const globalErrorHandler: ErrorRequestHandler = (
 
   if (error instanceof ZodError) {
     const simplefiedError = handleZodError(error);
+
+    statusCode = simplefiedError.statusCode;
+    message = simplefiedError.message;
+    errorMessages = simplefiedError.errorMessages;
+  } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const simplefiedError = handlePrismaClientError(error);
 
     statusCode = simplefiedError.statusCode;
     message = simplefiedError.message;
