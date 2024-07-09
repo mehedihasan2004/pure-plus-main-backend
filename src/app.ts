@@ -1,4 +1,5 @@
 import cors from 'cors';
+import globalErrorHandler from './app/middlewares/global-error-handler';
 import express, {
   Application,
   NextFunction,
@@ -19,8 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 /*================ ROUTES ================*/
 app.use('/api/v1', Router());
 
+/*================ GLOBAL ERROR HANDLER ================*/
+app.use(globalErrorHandler);
+
 /*================ TEST ROUTE ================*/
-app.get('/test', (_, res) => {
+app.get('/test', (_: Request, res: Response) => {
   res.json('Pure Plus Main Backend Server On Fire 🔥 💧 🔥');
 });
 
