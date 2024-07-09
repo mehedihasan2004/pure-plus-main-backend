@@ -1,10 +1,5 @@
 import { Response } from 'express';
-
-interface Meta {
-  page: number;
-  limit: number;
-  total: number;
-}
+import { Meta } from '../interfaces/common';
 
 interface ApiResponse<T> {
   statusCode: number;
