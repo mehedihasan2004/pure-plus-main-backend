@@ -5,4 +5,12 @@ interface PaginationOptions {
   sortOrder?: 'asc' | 'desc';
 }
 
-export { PaginationOptions };
+interface PaginationOptionsResponse {
+  page: number;
+  limit: number;
+  skip: number;
+  sortBy: string;
+  sortOrder: string;
+}
+
+export { PaginationOptions, PaginationOptionsResponse };
