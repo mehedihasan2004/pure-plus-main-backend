@@ -2,12 +2,12 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { ZodError } from 'zod';
 import env from '../../env';
+import { ZodError } from 'zod';
 import ApiError from '../../errors/api-error';
+import handleZodError from '../../errors/handle-zod-error';
 import { GenericErrorMessage } from '../../interfaces/common';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import handleZodError from '../../errors/handle-zod-error';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
