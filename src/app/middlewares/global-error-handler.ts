@@ -10,6 +10,7 @@ import handleZodError from '../../errors/handle-zod-error';
 import { GenericErrorMessage } from '../../interfaces/common';
 import handlePrismaClientError from '../../errors/handle-prisma-client-error';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import handlePrismaClientValidationError from '../../errors/handle-prisma-client-validation-error';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -24,7 +25,13 @@ const globalErrorHandler: ErrorRequestHandler = (
   let message: string = 'Something went wrong';
   let errorMessages: GenericErrorMessage[] = [];
 
-  if (error instanceof ZodError) {
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    const simplefiedError = handlePrismaClientValidationError(error);
+
+    statusCode = simplefiedError.statusCode;
+    message = simplefiedError.message;
+    errorMessages = simplefiedError.errorMessages;
+  } else if (error instanceof ZodError) {
     const simplefiedError = handleZodError(error);
 
     statusCode = simplefiedError.statusCode;
