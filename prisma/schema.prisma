@@ -51,3 +51,9 @@ enum EDepartments {
   TRANSFUSION_MEDICINE
   UROLOGY
 }
+
+enum EGender {
+  MALE
+  FEMALE
+  OTHERS
+}
