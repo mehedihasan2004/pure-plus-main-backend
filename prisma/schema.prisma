@@ -58,7 +58,7 @@ enum EGender {
   OTHERS
 }
 
-enum EDoctorRank {
+enum ERank {
   MEDICAL_STUDENT
   INTERN
   RESIDENT
@@ -93,4 +93,136 @@ enum EAppointmentStatus {
   COMPLETED
   NO_SHOW
   PENDING
+}
+
+enum EPaymentStatus {
+  NOT_PAID
+  PENDING
+  PAID
+  PARTIALLY_PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+  UNDER_REVIEW
+}
+
+enum ERole {
+  PATIENT
+  DOCTOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+model User {
+  id          String   @id
+  name        String
+  phone       String?  @unique
+  email       String   @unique
+  gender      EGender
+  image       String?
+  role        ERole    @default(PATIENT)
+  dateOfBirth DateTime
+
+  patient    Patient?
+  doctor     Doctor?
+  admin      Admin?
+  superAdmin SuperAdmin?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Patient {
+  address                String? @db.Text
+  emergencyContactNumber String?
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments Appointment[]
+  testimonials Testimonial[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("patients")
+}
+
+model Doctor {
+  department     EDepartment
+  rank           ERank
+  qualifications String      @db.Text
+  description    String?     @db.Text
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments Appointment[]
+  testimonials Testimonial[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("doctors")
+}
+
+model Admin {
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model SuperAdmin {
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("super_admins")
+}
+
+model Appointment {
+  id String @id @default(cuid())
+
+  department    EDepartment
+  date          DateTime
+  time          String
+  status        EAppointmentStatus
+  paymentStatus EPaymentStatus     @default(NOT_PAID)
+  prescription  String?
+  followUpDate  DateTime?
+
+  doctorId  String
+  doctor    Doctor  @relation(fields: [doctorId], references: [userId])
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [userId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("appointments")
+}
+
+model Testimonial {
+  id String @id @default(cuid())
+
+  comment String @db.Text
+  rating  Int?
+
+  doctorId  String
+  doctor    Doctor  @relation(fields: [doctorId], references: [userId], onDelete: Cascade)
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [userId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
 }
