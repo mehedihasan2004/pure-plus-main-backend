@@ -114,14 +114,14 @@ enum ERole {
 }
 
 model User {
-  id          String   @id
+  id          String    @id
   name        String
-  phone       String?  @unique
-  email       String   @unique
-  gender      EGender
+  phone       String?   @unique
+  email       String    @unique
+  gender      EGender?
   image       String?
-  role        ERole    @default(PATIENT)
-  dateOfBirth DateTime
+  role        ERole     @default(PATIENT)
+  dateOfBirth DateTime?
 
   patient    Patient?
   doctor     Doctor?
