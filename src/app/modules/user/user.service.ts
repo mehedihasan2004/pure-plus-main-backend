@@ -1,6 +1,6 @@
-import prisma from '../../lib/prisma';
-import ApiError from '../../errors/api-error';
+import prisma from '../../../lib/prisma';
 import { CreateUserRequest } from './user.type';
+import ApiError from '../../../errors/api-error';
 
 const createUser = async (data: CreateUserRequest) => {
   const isUserExist = await prisma.user.findUnique({ where: { id: data.id } });
