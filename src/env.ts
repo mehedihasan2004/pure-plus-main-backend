@@ -15,7 +15,7 @@ try {
   EnvSchema.parse(process.env);
 } catch (error) {
   if (error instanceof ZodError) {
-    let message = 'missing required values in .env:\n';
+    let message = 'Missing required values in .env:\n';
 
     error.issues.forEach(issue => (message += issue.path[0] + '\n'));
 

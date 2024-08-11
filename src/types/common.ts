@@ -1,23 +1,23 @@
-interface Meta {
+type Meta = {
   page: number;
   limit: number;
   total: number;
-}
+};
 
-interface GenericResponse<T> {
+type GenericResponse<T> = {
   meta: Meta;
   data: T;
-}
+};
 
-interface GenericErrorMessage {
+type GenericErrorMessage = {
   path: string | number;
   message: string;
-}
+};
 
-interface GenericErrorResponse {
+type GenericErrorResponse = {
   statusCode: number;
   message: string;
   errorMessages: GenericErrorMessage[];
-}
+};
 
 export { Meta, GenericResponse, GenericErrorMessage, GenericErrorResponse };

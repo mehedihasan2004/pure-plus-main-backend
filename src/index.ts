@@ -6,13 +6,13 @@ let server: Server;
 
 const main = async () => {
   server = app.listen(env.PORT, () =>
-    console.log(`pure plus listening on http://localhost:${env.PORT}`),
+    console.log(`Pure plus listening on http://localhost:${env.PORT}`),
   );
 
   const exitHandler = () => {
     if (server) {
       server.close(() => {
-        console.log('server closed');
+        console.log('Server closed!');
       });
     }
     process.exit(1);
