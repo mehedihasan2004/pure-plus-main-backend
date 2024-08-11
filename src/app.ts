@@ -1,12 +1,7 @@
 import cors from 'cors';
+import { routes } from './app/routes';
 import globalErrorHandler from './app/middlewares/global-error-handler';
-import express, {
-  Application,
-  NextFunction,
-  Request,
-  Response,
-  Router,
-} from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 
 const app: Application = express();
 
@@ -18,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /*================ ROUTES ================*/
-app.use('/api/v1', Router());
+app.use('/api/v1', routes);
 
 /*================ GLOBAL ERROR HANDLER ================*/
 app.use(globalErrorHandler);
@@ -32,8 +27,8 @@ app.get('/test', (_: Request, res: Response) => {
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
     success: false,
-    message: 'not found!',
-    errorMessages: [{ path: req.originalUrl, message: 'api not found!' }],
+    message: 'Not found!',
+    errorMessages: [{ path: req.originalUrl, message: 'Api not found!' }],
   });
 
   next();
