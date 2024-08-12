@@ -15,6 +15,7 @@ router
   )
 
   // READ
-  .get('/', UserController.getAllUsers);
+  .get('/', UserController.getAllUsers)
+  .get('/:id', UserController.getOneUserById);
 
 export const UserRoutes = router;

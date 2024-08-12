@@ -68,4 +68,12 @@ const getAllUsers = async (
   return { meta: { total, page, limit }, data: users };
 };
 
-export const UserService = { createUser, getAllUsers };
+const getOneUserById = async (id: string) => {
+  const user = await prisma.user.findUnique({ where: { id } });
+
+  if (!user) throw new ApiError(404, 'User not found!');
+
+  return user;
+};
+
+export const UserService = { createUser, getAllUsers, getOneUserById };
