@@ -16,6 +16,9 @@ router
 
   // READ
   .get('/', UserController.getAllUsers)
-  .get('/:id', UserController.getOneUserById);
+  .get('/:id', UserController.getOneUserById)
+
+  // DELETE
+  .delete('/:id', UserController.deleteAUserById);
 
 export const UserRoutes = router;

@@ -48,4 +48,20 @@ const getOneUserById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const UserController = { createUser, getAllUsers, getOneUserById };
+const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.deleteAUserById(req.params.id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'One user deleted',
+    data,
+  });
+});
+
+export const UserController = {
+  createUser,
+  getAllUsers,
+  getOneUserById,
+  deleteAUserById,
+};
