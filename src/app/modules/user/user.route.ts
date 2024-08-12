@@ -16,7 +16,7 @@ router
 
   // READ
   .get('/', UserController.getAllUsers)
-  .get('/:id', UserController.getOneUserById)
+  .get('/:id', UserController.getAUserById)
 
   // DELETE
   .delete('/:id', UserController.deleteAUserById);

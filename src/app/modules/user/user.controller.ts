@@ -37,13 +37,13 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getOneUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.getOneUserById(req.params.id);
+const getAUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.getAUserById(req.params.id);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'One user retrieved',
+    message: 'A user retrieved',
     data,
   });
 });
@@ -54,7 +54,7 @@ const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'One user deleted',
+    message: 'A user deleted',
     data,
   });
 });
@@ -62,6 +62,6 @@ const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
 export const UserController = {
   createUser,
   getAllUsers,
-  getOneUserById,
+  getAUserById,
   deleteAUserById,
 };

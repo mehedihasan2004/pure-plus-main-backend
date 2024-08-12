@@ -68,7 +68,7 @@ const getAllUsers = async (
   return { meta: { total, page, limit }, data: users };
 };
 
-const getOneUserById = async (id: string) => {
+const getAUserById = async (id: string) => {
   const user = await prisma.user.findUnique({ where: { id } });
 
   if (!user) throw new ApiError(404, 'User not found!');
@@ -85,6 +85,6 @@ const deleteAUserById = async (id: string) => {
 export const UserService = {
   createUser,
   getAllUsers,
-  getOneUserById,
+  getAUserById,
   deleteAUserById,
 };
