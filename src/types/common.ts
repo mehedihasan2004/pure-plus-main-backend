@@ -20,4 +20,14 @@ type GenericErrorResponse = {
   errorMessages: GenericErrorMessage[];
 };
 
-export { Meta, GenericResponse, GenericErrorMessage, GenericErrorResponse };
+type SearchTerm = {
+  searchTerm?: string;
+};
+
+export {
+  Meta,
+  GenericResponse,
+  GenericErrorMessage,
+  GenericErrorResponse,
+  SearchTerm,
+};

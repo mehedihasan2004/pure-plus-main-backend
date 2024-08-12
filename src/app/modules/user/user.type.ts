@@ -1,5 +1,16 @@
-import { User } from '@prisma/client';
+import { SearchTerm } from '../../../types/common';
+import { EGender, ERole, User } from '@prisma/client';
 
 type CreateUserRequest = Pick<User, 'id' | 'name' | 'email'>;
 
-export { CreateUserRequest };
+type UserFilters = {
+  id?: string;
+  name?: string;
+  phone?: string;
+  email?: string;
+  gender?: EGender;
+  role?: ERole;
+  dateOfBirth?: string;
+} & SearchTerm;
+
+export { CreateUserRequest, UserFilters };
