@@ -36,4 +36,19 @@ const getAllDoctors = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const DoctorController = { createADoctor, getAllDoctors };
+const getADoctorByUserId = catchAsync(async (req: Request, res: Response) => {
+  const data = await DoctorService.getADoctorByUserId(req.params.id);
+
+  sendResponse<Doctor>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Doctor retrieved',
+    data,
+  });
+});
+
+export const DoctorController = {
+  createADoctor,
+  getAllDoctors,
+  getADoctorByUserId,
+};

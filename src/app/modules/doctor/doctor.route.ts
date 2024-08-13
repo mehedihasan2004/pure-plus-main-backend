@@ -15,6 +15,7 @@ router
   )
 
   // READ
-  .get('/', DoctorController.getAllDoctors);
+  .get('/', DoctorController.getAllDoctors)
+  .get('/:id', DoctorController.getADoctorByUserId);
 
 export const DoctorRoutes = router;
