@@ -10,7 +10,7 @@ import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
 
-const createAUser = async (db: DB, data: CreateUserRequest) => {
+const createAUser = async (db: DB, data: CreateUserRequest): Promise<User> => {
   const isUserExist = await db.user.findUnique({ where: { id: data.id } });
 
   if (isUserExist) throw new ApiError(409, 'User already exist with this id!');
@@ -67,7 +67,7 @@ const getAllUsers = async (
   return { meta: { total, page, limit }, data: users };
 };
 
-const getAUserById = async (id: string) => {
+const getAUserById = async (id: string): Promise<User> => {
   const user = await prisma.user.findUnique({ where: { id } });
 
   if (!user) throw new ApiError(404, 'User not found!');
@@ -75,13 +75,16 @@ const getAUserById = async (id: string) => {
   return user;
 };
 
-const updateAUserById = async (id: string, data: UpdateUserRequest) => {
+const updateAUserById = async (
+  id: string,
+  data: UpdateUserRequest,
+): Promise<User> => {
   const user = await prisma.user.update({ where: { id }, data });
 
   return user;
 };
 
-const deleteAUserById = async (id: string) => {
+const deleteAUserById = async (id: string): Promise<User> => {
   const user = await prisma.user.delete({ where: { id } });
 
   return user;

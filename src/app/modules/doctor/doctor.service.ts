@@ -10,7 +10,9 @@ import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 import { CreateAUserAndDoctorRequest, DoctorFilters } from './doctor.type';
 
-const createADoctor = async (data: CreateAUserAndDoctorRequest) => {
+const createADoctor = async (
+  data: CreateAUserAndDoctorRequest,
+): Promise<Doctor> => {
   const doctor = await prisma.$transaction(async tx => {
     const user = await UserService.createAUser(tx, {
       role: ERole.DOCTOR,
