@@ -18,6 +18,13 @@ router
   .get('/', UserController.getAllUsers)
   .get('/:id', UserController.getAUserById)
 
+  // UPDATE
+  .patch(
+    '/:id',
+    validateZodSchema(UserValidation.updateUserZodSchema),
+    UserController.updateAUserById,
+  )
+
   // DELETE
   .delete('/:id', UserController.deleteAUserById);
 

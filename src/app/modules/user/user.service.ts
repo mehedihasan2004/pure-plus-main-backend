@@ -5,7 +5,7 @@ import { Prisma, User } from '@prisma/client';
 import { UserConstant } from './user.constant';
 import ApiError from '../../../errors/api-error';
 import { GenericResponse } from '../../../types/common';
-import { CreateUserRequest, UserFilters } from './user.type';
+import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 
@@ -76,6 +76,12 @@ const getAUserById = async (id: string) => {
   return user;
 };
 
+const updateAUserById = async (id: string, data: UpdateUserRequest) => {
+  const user = await prisma.user.update({ where: { id }, data });
+
+  return user;
+};
+
 const deleteAUserById = async (id: string) => {
   const user = await prisma.user.delete({ where: { id } });
 
@@ -86,5 +92,6 @@ export const UserService = {
   createUser,
   getAllUsers,
   getAUserById,
+  updateAUserById,
   deleteAUserById,
 };

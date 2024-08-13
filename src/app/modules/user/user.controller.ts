@@ -48,6 +48,17 @@ const getAUserById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.updateAUserById(req.params.id, req.body);
+
+  sendResponse<User>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User updated',
+    data,
+  });
+});
+
 const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
   const data = await UserService.deleteAUserById(req.params.id);
 
@@ -63,5 +74,6 @@ export const UserController = {
   createUser,
   getAllUsers,
   getAUserById,
+  updateAUserById,
   deleteAUserById,
 };
