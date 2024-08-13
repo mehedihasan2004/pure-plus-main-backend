@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import prisma from '../../../lib/prisma';
+import { DB } from '../../../types/prisma';
 import { Prisma, User } from '@prisma/client';
 import { UserConstant } from './user.constant';
 import ApiError from '../../../errors/api-error';
 import { GenericResponse } from '../../../types/common';
-import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
+import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
 
-const createUser = async (data: CreateUserRequest) => {
-  const isUserExist = await prisma.user.findUnique({ where: { id: data.id } });
+const createAUser = async (db: DB, data: CreateUserRequest) => {
+  const isUserExist = await db.user.findUnique({ where: { id: data.id } });
 
   if (isUserExist) throw new ApiError(409, 'User already exist with this id!');
 
-  const user = await prisma.user.create({ data });
+  const user = await db.user.create({ data });
 
   if (!user) throw new ApiError(500, 'Failed to create user!');
 
@@ -89,7 +90,7 @@ const deleteAUserById = async (id: string) => {
 };
 
 export const UserService = {
-  createUser,
+  createAUser,
   getAllUsers,
   getAUserById,
   updateAUserById,

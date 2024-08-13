@@ -3,7 +3,7 @@ import { SearchTerm } from '../../../types/common';
 import { UserValidation } from './user.validation';
 import { EGender, ERole, User } from '@prisma/client';
 
-type CreateUserRequest = Pick<User, 'id' | 'name' | 'email'>;
+type CreateUserRequest = Pick<User, 'id' | 'name' | 'email' | 'role'>;
 
 type UserFilters = {
   id?: string;

@@ -10,7 +10,7 @@ router
   // WRITE
   .post(
     '/',
-    validateZodSchema(DoctorValidation.createADoctorZodSchema),
+    validateZodSchema(DoctorValidation.createAUserAndDoctorZodSchema),
     DoctorController.createADoctor,
   );
 
