@@ -12,4 +12,13 @@ type DoctorFilters = {
   rank?: ERank;
 } & SearchTerm;
 
-export { CreateAUserAndDoctorRequest, DoctorFilters };
+type UpdateADoctorIncludingUserByUserIdRequest = {
+  user?: Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt'>>;
+  doctor?: Partial<Omit<Doctor, 'userId' | 'createdAt' | 'updatedAt'>>;
+};
+
+export {
+  CreateAUserAndDoctorRequest,
+  DoctorFilters,
+  UpdateADoctorIncludingUserByUserIdRequest,
+};

@@ -8,7 +8,11 @@ import { Doctor, ERole, Prisma } from '@prisma/client';
 import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
-import { CreateAUserAndDoctorRequest, DoctorFilters } from './doctor.type';
+import {
+  CreateAUserAndDoctorRequest,
+  DoctorFilters,
+  UpdateADoctorIncludingUserByUserIdRequest,
+} from './doctor.type';
 
 const createADoctor = async (
   data: CreateAUserAndDoctorRequest,
@@ -99,8 +103,38 @@ const getADoctorByUserId = async (userId: string): Promise<Doctor> => {
   return doctor;
 };
 
+const updateADoctorIncludingUserByUserId = async (
+  userId: string,
+  {
+    user: userData,
+    doctor: doctorData,
+  }: UpdateADoctorIncludingUserByUserIdRequest,
+): Promise<Doctor> => {
+  const doctor = await prisma.$transaction(async tx => {
+    if (userData)
+      await tx.user.update({ where: { id: userId }, data: userData });
+
+    if (doctorData) {
+      const updatedDoctor = await tx.doctor.update({
+        where: { userId },
+        data: doctorData,
+        include: { user: true },
+      });
+
+      return updatedDoctor;
+    }
+
+    return null;
+  });
+
+  if (!doctor) throw new ApiError(500, 'Failed to update the doctor!');
+
+  return doctor;
+};
+
 export const DoctorService = {
   createADoctor,
   getAllDoctors,
   getADoctorByUserId,
+  updateADoctorIncludingUserByUserId,
 };

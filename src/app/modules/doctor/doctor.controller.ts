@@ -47,8 +47,25 @@ const getADoctorByUserId = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateADoctorIncludingUserByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = await DoctorService.updateADoctorIncludingUserByUserId(
+      req.params.id,
+      req.body,
+    );
+
+    sendResponse<Doctor>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Doctor updated',
+      data,
+    });
+  },
+);
+
 export const DoctorController = {
   createADoctor,
   getAllDoctors,
   getADoctorByUserId,
+  updateADoctorIncludingUserByUserId,
 };

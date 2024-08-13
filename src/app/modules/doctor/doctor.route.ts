@@ -16,6 +16,15 @@ router
 
   // READ
   .get('/', DoctorController.getAllDoctors)
-  .get('/:id', DoctorController.getADoctorByUserId);
+  .get('/:id', DoctorController.getADoctorByUserId)
+
+  // UPDATE
+  .patch(
+    '/:id',
+    validateZodSchema(
+      DoctorValidation.updateADoctorIncludingUserByUserIdZodSchema,
+    ),
+    DoctorController.updateADoctorIncludingUserByUserId,
+  );
 
 export const DoctorRoutes = router;
