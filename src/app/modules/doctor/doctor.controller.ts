@@ -1,7 +1,10 @@
+import pick from '../../../shared/pick';
 import { Doctor } from '@prisma/client';
 import { Request, Response } from 'express';
 import { DoctorService } from './doctor.service';
+import { DoctorConstant } from './doctor.constant';
 import catchAsync from '../../../shared/catch-async';
+import paginationFields from '../../../lib/pagination';
 import sendResponse from '../../../shared/send-response';
 
 const createADoctor = catchAsync(async (req: Request, res: Response) => {
@@ -15,4 +18,22 @@ const createADoctor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const DoctorController = { createADoctor };
+const getAllDoctors = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, DoctorConstant.doctorFilterableFields);
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const { meta, data } = await DoctorService.getAllDoctors(
+    filters,
+    paginationOptions,
+  );
+
+  sendResponse<Doctor[]>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'All doctors retrieved',
+    meta,
+    data,
+  });
+});
+
+export const DoctorController = { createADoctor, getAllDoctors };

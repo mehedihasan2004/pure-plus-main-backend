@@ -12,6 +12,9 @@ router
     '/',
     validateZodSchema(DoctorValidation.createAUserAndDoctorZodSchema),
     DoctorController.createADoctor,
-  );
+  )
+
+  // READ
+  .get('/', DoctorController.getAllDoctors);
 
 export const DoctorRoutes = router;

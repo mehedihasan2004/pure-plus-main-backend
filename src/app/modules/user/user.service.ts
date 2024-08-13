@@ -52,9 +52,7 @@ const getAllUsers = async (
     });
   }
 
-  const where: Prisma.UserWhereInput = {
-    AND: pipeline,
-  };
+  const where: Prisma.UserWhereInput = { AND: pipeline };
 
   const users = await prisma.user.findMany({
     where,

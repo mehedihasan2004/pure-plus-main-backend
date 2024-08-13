@@ -9,7 +9,6 @@ import sendResponse from '../../../shared/send-response';
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, UserConstant.userFilterableFields);
-
   const paginationOptions = pick(req.query, paginationFields);
 
   const { meta, data } = await UserService.getAllUsers(
