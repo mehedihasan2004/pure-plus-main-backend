@@ -132,9 +132,24 @@ const updateADoctorIncludingUserByUserId = async (
   return doctor;
 };
 
+const deleteADoctorIncludingUserByUserId = async (userId: string) => {
+  const doctor = await prisma.$transaction(async tx => {
+    const deletedDoctor = await prisma.doctor.delete({ where: { userId } });
+
+    await tx.user.delete({ where: { id: userId } });
+
+    return deletedDoctor;
+  });
+
+  if (!doctor) throw new ApiError(500, 'Failed to delete doctor!');
+
+  return doctor;
+};
+
 export const DoctorService = {
   createADoctor,
   getAllDoctors,
   getADoctorByUserId,
   updateADoctorIncludingUserByUserId,
+  deleteADoctorIncludingUserByUserId,
 };

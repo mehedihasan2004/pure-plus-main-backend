@@ -25,6 +25,9 @@ router
       DoctorValidation.updateADoctorIncludingUserByUserIdZodSchema,
     ),
     DoctorController.updateADoctorIncludingUserByUserId,
-  );
+  )
+
+  // DELETE
+  .delete('/:id', DoctorController.deleteADoctorIncludingUserByUserId);
 
 export const DoctorRoutes = router;

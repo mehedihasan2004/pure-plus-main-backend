@@ -63,9 +63,25 @@ const updateADoctorIncludingUserByUserId = catchAsync(
   },
 );
 
+const deleteADoctorIncludingUserByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = await DoctorService.deleteADoctorIncludingUserByUserId(
+      req.params.id,
+    );
+
+    sendResponse<Doctor>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Doctor deleted',
+      data,
+    });
+  },
+);
+
 export const DoctorController = {
   createADoctor,
   getAllDoctors,
   getADoctorByUserId,
   updateADoctorIncludingUserByUserId,
+  deleteADoctorIncludingUserByUserId,
 };
