@@ -9,16 +9,16 @@ router
 
   // READ
   .get('/', UserController.getAllUsers)
-  .get('/:id', UserController.getAUserById)
+  .get('/:id', UserController.getAnUserById)
 
   // UPDATE
   .patch(
     '/:id',
-    validateZodSchema(UserValidation.updateUserZodSchema),
-    UserController.updateAUserById,
+    validateZodSchema(UserValidation.updateAnUserZodSchema),
+    UserController.updateAnUserById,
   )
 
   // DELETE
-  .delete('/:id', UserController.deleteAUserById);
+  .delete('/:id', UserController.deleteAnUserById);
 
 export const UserRoutes = router;

@@ -20,7 +20,7 @@ const createADoctorZodSchema = z.object({
 
 const createAUserAndDoctorZodSchema = z.object({
   body: z.object({
-    user: UserValidation.createUserZodSchema,
+    user: UserValidation.createAnUserZodSchema,
     doctor: createADoctorZodSchema,
   }),
 });

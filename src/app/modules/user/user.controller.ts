@@ -25,8 +25,8 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.getAUserById(req.params.id);
+const getAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.getAnUserById(req.params.id);
 
   sendResponse(res, {
     statusCode: 200,
@@ -36,8 +36,8 @@ const getAUserById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.updateAUserById(req.params.id, req.body);
+const updateAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.updateAnUserById(req.params.id, req.body);
 
   sendResponse<User>(res, {
     statusCode: 200,
@@ -47,8 +47,8 @@ const updateAUserById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.deleteAUserById(req.params.id);
+const deleteAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.deleteAnUserById(req.params.id);
 
   sendResponse(res, {
     statusCode: 200,
@@ -60,7 +60,7 @@ const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   getAllUsers,
-  getAUserById,
-  updateAUserById,
-  deleteAUserById,
+  getAnUserById,
+  updateAnUserById,
+  deleteAnUserById,
 };

@@ -9,16 +9,16 @@ import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 import {
-  CreateAUserAndDoctorRequest,
+  CreateAnUserAndDoctorRequest,
   DoctorFilters,
   UpdateADoctorIncludingUserByUserIdRequest,
 } from './doctor.type';
 
 const createADoctor = async (
-  data: CreateAUserAndDoctorRequest,
+  data: CreateAnUserAndDoctorRequest,
 ): Promise<Doctor> => {
   const doctor = await prisma.$transaction(async tx => {
-    const user = await UserService.createAUser(tx, {
+    const user = await UserService.createAnUser(tx, {
       role: ERole.DOCTOR,
       ...data.user,
     });

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { EGender, ERole } from '@prisma/client';
 
-const createUserZodSchema = z.object({
+const createAnUserZodSchema = z.object({
   id: z
     .string({ required_error: 'Id is required!' })
     .min(1, { message: 'Id should be at least one character!' }),
@@ -24,7 +24,7 @@ const createUserZodSchema = z.object({
   dateOfBirth: z.string().optional(),
 });
 
-const updateUserZodSchema = z.object({
+const updateAnUserZodSchema = z.object({
   body: z.object({
     name: z.string().optional(),
     phone: z.string().optional(),
@@ -38,4 +38,4 @@ const updateUserZodSchema = z.object({
   }),
 });
 
-export const UserValidation = { createUserZodSchema, updateUserZodSchema };
+export const UserValidation = { createAnUserZodSchema, updateAnUserZodSchema };
