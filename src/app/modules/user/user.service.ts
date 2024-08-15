@@ -8,9 +8,13 @@ import ApiError from '../../../errors/api-error';
 import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
-import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
+import {
+  CreateAUserRequest,
+  UpdateAUserRequest,
+  UserFilters,
+} from './user.type';
 
-const createAUser = async (db: DB, data: CreateUserRequest): Promise<User> => {
+const createAUser = async (db: DB, data: CreateAUserRequest): Promise<User> => {
   const isUserExist = await db.user.findUnique({ where: { id: data.id } });
 
   if (isUserExist) throw new ApiError(409, 'User already exist with this id!');
@@ -77,7 +81,7 @@ const getAUserById = async (id: string): Promise<User> => {
 
 const updateAUserById = async (
   id: string,
-  data: UpdateUserRequest,
+  data: UpdateAUserRequest,
 ): Promise<User> => {
   const user = await prisma.user.update({ where: { id }, data });
 

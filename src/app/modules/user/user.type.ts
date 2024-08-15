@@ -3,7 +3,7 @@ import { SearchTerm } from '../../../types/common';
 import { UserValidation } from './user.validation';
 import { EGender, ERole, User } from '@prisma/client';
 
-type CreateUserRequest = Pick<User, 'id' | 'name' | 'email' | 'role'>;
+type CreateAUserRequest = Pick<User, 'id' | 'name' | 'email' | 'role'>;
 
 type UserFilters = {
   id?: string;
@@ -15,8 +15,8 @@ type UserFilters = {
   dateOfBirth?: string;
 } & SearchTerm;
 
-type UpdateUserRequest = Partial<
+type UpdateAUserRequest = Partial<
   z.infer<typeof UserValidation.updateUserZodSchema>
 >;
 
-export { CreateUserRequest, UserFilters, UpdateUserRequest };
+export { CreateAUserRequest, UserFilters, UpdateAUserRequest };
