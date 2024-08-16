@@ -7,7 +7,7 @@ const createAPatientZodSchema = z
     emergencyContactNumber: z
       .string()
       .min(11, {
-        message: 'Energency contact number should be at lest 11 character!',
+        message: 'Emergency contact number should be at lest 11 character!',
       })
       .optional(),
   })
