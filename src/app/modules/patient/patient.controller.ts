@@ -1,3 +1,4 @@
+import { Patient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { PatientService } from './patient.service';
 import catchAsync from '../../../shared/catch-async';
@@ -16,4 +17,18 @@ const createAnUserWithPatient = catchAsync(
   },
 );
 
-export const PatientController = { createAnUserWithPatient };
+const getAPatientByUserId = catchAsync(async (req: Request, res: Response) => {
+  const data = await PatientService.getAPatientByUserId(req.params.id);
+
+  sendResponse<Patient>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Patient retrieved',
+    data,
+  });
+});
+
+export const PatientController = {
+  createAnUserWithPatient,
+  getAPatientByUserId,
+};

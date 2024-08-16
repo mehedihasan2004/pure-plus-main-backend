@@ -1,5 +1,5 @@
-import { ERole } from '@prisma/client';
 import prisma from '../../../lib/prisma';
+import { ERole, Patient } from '@prisma/client';
 import ApiError from '../../../errors/api-error';
 import { CreateAnUserWithPatientRequest } from './patient.type';
 
@@ -33,4 +33,15 @@ const createAnUserWithPatient = async ({
   return patient;
 };
 
-export const PatientService = { createAnUserWithPatient };
+const getAPatientByUserId = async (userId: string): Promise<Patient> => {
+  const patient = await prisma.patient.findUnique({
+    where: { userId },
+    include: { user: true },
+  });
+
+  if (!patient) throw new ApiError(404, 'Patient not found!');
+
+  return patient;
+};
+
+export const PatientService = { createAnUserWithPatient, getAPatientByUserId };

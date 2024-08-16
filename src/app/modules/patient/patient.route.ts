@@ -12,6 +12,9 @@ router
     '/',
     validateZodSchema(PatientValidation.createAnUserWithPatientZodSchema),
     PatientController.createAnUserWithPatient,
-  );
+  )
+
+  // READ
+  .get('/:id', PatientController.getAPatientByUserId);
 
 export const PatientRoutes = router;
