@@ -15,6 +15,7 @@ router
   )
 
   // READ
+  .get('/', PatientController.getAllPatients)
   .get('/:id', PatientController.getAPatientByUserId);
 
 export const PatientRoutes = router;

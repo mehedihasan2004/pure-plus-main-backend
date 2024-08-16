@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import prisma from '../../../lib/prisma';
-import { ERole, Patient } from '@prisma/client';
 import ApiError from '../../../errors/api-error';
-import { CreateAnUserWithPatientRequest } from './patient.type';
+import { PatientConstant } from './patient.constant';
+import { GenericResponse } from '../../../types/common';
+import { ERole, Patient, Prisma } from '@prisma/client';
+import calculatePagination from '../../../helpers/pagination';
+import { PaginationOptions } from '../../../types/pagination';
+import { CreateAnUserWithPatientRequest, PatientFilters } from './patient.type';
 
 const createAnUserWithPatient = async ({
   user: userData,
@@ -33,6 +39,55 @@ const createAnUserWithPatient = async ({
   return patient;
 };
 
+const getAllPatients = async (
+  { searchTerm, ...filterData }: PatientFilters,
+  paginationOptions: PaginationOptions,
+): Promise<GenericResponse<Patient[]>> => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    calculatePagination(paginationOptions);
+
+  const pipeline = [];
+
+  if (searchTerm) {
+    pipeline.push({
+      OR: PatientConstant.patientSearchableFields.map(field => ({
+        [field]: { contains: searchTerm, mode: 'insensitive' },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    pipeline.push({
+      AND: Object.keys(filterData).map(key => {
+        if (PatientConstant.patientRelationalFields.includes(key)) {
+          return {
+            [PatientConstant.patientRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          };
+        } else {
+          return { [key]: { equals: (filterData as any)[key] } };
+        }
+      }),
+    });
+  }
+
+  const where: Prisma.PatientWhereInput = { AND: pipeline };
+
+  const doctors = await prisma.patient.findMany({
+    where,
+    skip,
+    take: limit,
+    orderBy:
+      sortBy && sortOrder ? { [sortBy]: sortOrder } : { updatedAt: 'desc' },
+    include: { user: true },
+  });
+
+  const total = await prisma.patient.count({ where });
+
+  return { meta: { total, page, limit }, data: doctors };
+};
+
 const getAPatientByUserId = async (userId: string): Promise<Patient> => {
   const patient = await prisma.patient.findUnique({
     where: { userId },
@@ -44,4 +99,8 @@ const getAPatientByUserId = async (userId: string): Promise<Patient> => {
   return patient;
 };
 
-export const PatientService = { createAnUserWithPatient, getAPatientByUserId };
+export const PatientService = {
+  createAnUserWithPatient,
+  getAllPatients,
+  getAPatientByUserId,
+};
