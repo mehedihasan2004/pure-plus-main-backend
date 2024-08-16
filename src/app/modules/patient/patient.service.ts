@@ -7,7 +7,11 @@ import { GenericResponse } from '../../../types/common';
 import { ERole, Patient, Prisma } from '@prisma/client';
 import calculatePagination from '../../../helpers/pagination';
 import { PaginationOptions } from '../../../types/pagination';
-import { CreateAnUserWithPatientRequest, PatientFilters } from './patient.type';
+import {
+  CreateAnUserWithPatientRequest,
+  PatientFilters,
+  UpdateAPatientIncludingUserByUserIdRequest,
+} from './patient.type';
 
 const createAnUserWithPatient = async ({
   user: userData,
@@ -99,8 +103,38 @@ const getAPatientByUserId = async (userId: string): Promise<Patient> => {
   return patient;
 };
 
+const updateAPatientIncludingUserByUserId = async (
+  userId: string,
+  {
+    user: userData,
+    patient: patientData,
+  }: UpdateAPatientIncludingUserByUserIdRequest,
+): Promise<Patient> => {
+  const patient = await prisma.$transaction(async tx => {
+    if (userData)
+      await tx.user.update({ where: { id: userId }, data: userData });
+
+    if (patientData) {
+      const updatedPatient = await tx.patient.update({
+        where: { userId },
+        data: patientData,
+        include: { user: true },
+      });
+
+      return updatedPatient;
+    }
+
+    return null;
+  });
+
+  if (!patient) throw new ApiError(500, 'Failed to update the patient!');
+
+  return patient;
+};
+
 export const PatientService = {
   createAnUserWithPatient,
   getAllPatients,
   getAPatientByUserId,
+  updateAPatientIncludingUserByUserId,
 };

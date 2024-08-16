@@ -16,6 +16,9 @@ router
 
   // READ
   .get('/', PatientController.getAllPatients)
-  .get('/:id', PatientController.getAPatientByUserId);
+  .get('/:id', PatientController.getAPatientByUserId)
+
+  // UPDATE
+  .patch('/:id', PatientController.updateAPatientIncludingUserByUserId);
 
 export const PatientRoutes = router;

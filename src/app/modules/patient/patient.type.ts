@@ -11,4 +11,13 @@ type PatientFilters = {
   emergencyContactNumber?: string;
 } & SearchTerm;
 
-export { CreateAnUserWithPatientRequest, PatientFilters };
+type UpdateAPatientIncludingUserByUserIdRequest = {
+  user?: Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt'>>;
+  patient?: Partial<Omit<Patient, 'userId' | 'createdAt' | 'updatedAt'>>;
+};
+
+export {
+  CreateAnUserWithPatientRequest,
+  PatientFilters,
+  UpdateAPatientIncludingUserByUserIdRequest,
+};
