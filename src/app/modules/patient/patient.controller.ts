@@ -8,7 +8,7 @@ const createAnUserWithPatient = catchAsync(
   async (req: Request, res: Response) => {
     const data = await PatientService.createAnUserWithPatient(req.body);
 
-    sendResponse(res, {
+    sendResponse<Patient>(res, {
       statusCode: 200,
       success: true,
       message: 'Patient created',

@@ -6,7 +6,7 @@ import { CreateAnUserWithPatientRequest } from './patient.type';
 const createAnUserWithPatient = async ({
   user: userData,
   patient: patientData,
-}: CreateAnUserWithPatientRequest) => {
+}: CreateAnUserWithPatientRequest): Promise<Patient> => {
   const isUserExist = await prisma.user.findUnique({
     where: { id: userData.id },
   });
