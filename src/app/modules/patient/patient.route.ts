@@ -19,6 +19,9 @@ router
   .get('/:id', PatientController.getAPatientByUserId)
 
   // UPDATE
-  .patch('/:id', PatientController.updateAPatientIncludingUserByUserId);
+  .patch('/:id', PatientController.updateAPatientIncludingUserByUserId)
+
+  // DELETE
+  .delete('/:id', PatientController.deleteAPatientIncludingUserByUserId);
 
 export const PatientRoutes = router;

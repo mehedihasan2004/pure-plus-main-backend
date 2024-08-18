@@ -65,9 +65,25 @@ const updateAPatientIncludingUserByUserId = catchAsync(
   },
 );
 
+const deleteAPatientIncludingUserByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = await PatientService.deleteAPatientIncludingUserByUserId(
+      req.params.id,
+    );
+
+    sendResponse<Patient>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Patient deleted',
+      data,
+    });
+  },
+);
+
 export const PatientController = {
   createAnUserWithPatient,
   getAllPatients,
   getAPatientByUserId,
   updateAPatientIncludingUserByUserId,
+  deleteAPatientIncludingUserByUserId,
 };

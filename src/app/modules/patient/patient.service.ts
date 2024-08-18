@@ -134,9 +134,29 @@ const updateAPatientIncludingUserByUserId = async (
   return patient;
 };
 
+const deleteAPatientIncludingUserByUserId = async (
+  userId: string,
+): Promise<Patient> => {
+  const patient = await prisma.$transaction(async tx => {
+    const deletedPatient = await tx.patient.delete({
+      where: { userId },
+      include: { user: true },
+    });
+
+    await tx.user.delete({ where: { id: userId } });
+
+    return deletedPatient;
+  });
+
+  if (!patient) throw new ApiError(500, 'Failed to delete patient!');
+
+  return patient;
+};
+
 export const PatientService = {
   createAnUserWithPatient,
   getAllPatients,
   getAPatientByUserId,
   updateAPatientIncludingUserByUserId,
+  deleteAPatientIncludingUserByUserId,
 };
