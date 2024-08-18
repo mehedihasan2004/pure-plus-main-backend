@@ -134,7 +134,7 @@ const updateADoctorIncludingUserByUserId = async (
 
 const deleteADoctorIncludingUserByUserId = async (userId: string) => {
   const doctor = await prisma.$transaction(async tx => {
-    const deletedDoctor = await prisma.doctor.delete({ where: { userId } });
+    const deletedDoctor = await tx.doctor.delete({ where: { userId } });
 
     await tx.user.delete({ where: { id: userId } });
 
