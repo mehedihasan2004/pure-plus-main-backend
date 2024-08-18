@@ -2,15 +2,15 @@
 
 import prisma from '../../../lib/prisma';
 import ApiError from '../../../errors/api-error';
-import { DoctorConstant } from './doctor.constant';
 import { UserService } from '../user/user.service';
+import { DoctorConstant } from './doctor.constant';
 import { Doctor, ERole, Prisma } from '@prisma/client';
 import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 import {
-  CreateAnUserAndDoctorRequest,
   DoctorFilters,
+  CreateAnUserAndDoctorRequest,
   UpdateADoctorIncludingUserByUserIdRequest,
 } from './doctor.type';
 
@@ -105,26 +105,25 @@ const getADoctorByUserId = async (userId: string): Promise<Doctor> => {
 
 const updateADoctorIncludingUserByUserId = async (
   userId: string,
-  {
-    user: userData,
-    doctor: doctorData,
-  }: UpdateADoctorIncludingUserByUserIdRequest,
+  data: UpdateADoctorIncludingUserByUserIdRequest,
 ): Promise<Doctor> => {
   const doctor = await prisma.$transaction(async tx => {
-    if (userData)
-      await tx.user.update({ where: { id: userId }, data: userData });
-
-    if (doctorData) {
-      const updatedDoctor = await tx.doctor.update({
-        where: { userId },
-        data: doctorData,
-        include: { user: true },
-      });
-
-      return updatedDoctor;
+    if (data.user) {
+      await tx.user.update({ where: { id: userId }, data: data.user });
     }
 
-    return null;
+    if (data.doctor) {
+      return await tx.doctor.update({
+        where: { userId },
+        data: data.doctor,
+        include: { user: true },
+      });
+    } else {
+      return await tx.doctor.findUnique({
+        where: { userId },
+        include: { user: true },
+      });
+    }
   });
 
   if (!doctor) throw new ApiError(500, 'Failed to update the doctor!');
@@ -132,9 +131,14 @@ const updateADoctorIncludingUserByUserId = async (
   return doctor;
 };
 
-const deleteADoctorIncludingUserByUserId = async (userId: string) => {
+const deleteADoctorIncludingUserByUserId = async (
+  userId: string,
+): Promise<Doctor> => {
   const doctor = await prisma.$transaction(async tx => {
-    const deletedDoctor = await tx.doctor.delete({ where: { userId } });
+    const deletedDoctor = await tx.doctor.delete({
+      where: { userId },
+      include: { user: true },
+    });
 
     await tx.user.delete({ where: { id: userId } });
 

@@ -9,9 +9,9 @@ import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
 import {
+  UserFilters,
   CreateAnUserRequest,
   UpdateAnUserRequest,
-  UserFilters,
 } from './user.type';
 
 const createAnUser = async (

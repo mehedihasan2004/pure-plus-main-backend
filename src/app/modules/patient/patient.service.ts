@@ -2,36 +2,42 @@
 
 import prisma from '../../../lib/prisma';
 import ApiError from '../../../errors/api-error';
+import { UserService } from '../user/user.service';
 import { PatientConstant } from './patient.constant';
 import { GenericResponse } from '../../../types/common';
 import { ERole, Patient, Prisma } from '@prisma/client';
 import calculatePagination from '../../../helpers/pagination';
 import { PaginationOptions } from '../../../types/pagination';
 import {
-  CreateAnUserWithPatientRequest,
   PatientFilters,
+  CreateAnUserWithPatientRequest,
   UpdateAPatientIncludingUserByUserIdRequest,
 } from './patient.type';
 
-const createAnUserWithPatient = async ({
-  user: userData,
-  patient: patientData,
-}: CreateAnUserWithPatientRequest): Promise<Patient> => {
+const createAnUserWithPatient = async (
+  data: CreateAnUserWithPatientRequest,
+): Promise<Patient> => {
   const isUserExist = await prisma.user.findUnique({
-    where: { id: userData.id },
+    where: { id: data.user.id },
   });
 
   if (isUserExist) throw new ApiError(409, 'User already exist with this id!');
 
   const patient = await prisma.$transaction(async tx => {
-    const user = await tx.user.create({
-      data: { role: ERole.PATIENT, ...userData },
+    const user = await UserService.createAnUser(tx, {
+      role: ERole.PATIENT,
+      ...data.user,
     });
 
-    if (!user) throw new ApiError(500, 'Failed to create user!');
+    const isPatientExist = await tx.patient.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (isPatientExist)
+      throw new ApiError(409, 'Patient already exist with this user id!');
 
     const newPatient = await tx.patient.create({
-      data: { userId: user.id, ...patientData },
+      data: { userId: user.id, ...data.patient },
       include: { user: true },
     });
 
@@ -105,20 +111,17 @@ const getAPatientByUserId = async (userId: string): Promise<Patient> => {
 
 const updateAPatientIncludingUserByUserId = async (
   userId: string,
-  {
-    user: userData,
-    patient: patientData,
-  }: UpdateAPatientIncludingUserByUserIdRequest,
+  data: UpdateAPatientIncludingUserByUserIdRequest,
 ): Promise<Patient> => {
   const patient = await prisma.$transaction(async tx => {
-    if (userData) {
-      await tx.user.update({ where: { id: userId }, data: userData });
+    if (data.user) {
+      await tx.user.update({ where: { id: userId }, data: data.user });
     }
 
-    if (patientData) {
+    if (data.patient) {
       return await tx.patient.update({
         where: { userId },
-        data: patientData,
+        data: data.patient,
         include: { user: true },
       });
     } else {
