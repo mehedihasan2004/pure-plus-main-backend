@@ -1,6 +1,6 @@
 import { z } from 'zod';
+import { EDepartment, ERank } from '@prisma/client';
 import { UserValidation } from '../user/user.validation';
-import { EDepartment, EGender, ERank, ERole } from '@prisma/client';
 
 const createADoctorZodSchema = z.object({
   department: z.enum([...Object.values(EDepartment)] as [string, ...string[]], {
@@ -40,21 +40,9 @@ const updateADoctorZodSchema = z.object({
     .optional(),
 });
 
-const updateAUserZodSchema = z.object({
-  name: z.string().optional(),
-  phone: z.string().optional(),
-  email: z.string().email().optional(),
-  gender: z
-    .enum([...Object.values(EGender)] as [string, ...string[]])
-    .optional(),
-  image: z.string().optional(),
-  role: z.enum([...Object.values(ERole)] as [string, ...string[]]).optional(),
-  dateofBirth: z.string().optional(),
-});
-
 const updateADoctorIncludingUserByUserIdZodSchema = z.object({
   body: z.object({
-    user: updateAUserZodSchema,
+    user: UserValidation.updateAnUserFieldsZodSchema,
     doctor: updateADoctorZodSchema,
   }),
 });

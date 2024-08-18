@@ -24,18 +24,24 @@ const createAnUserZodSchema = z.object({
   dateOfBirth: z.string().optional(),
 });
 
-const updateAnUserZodSchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    phone: z.string().optional(),
-    email: z.string().email().optional(),
-    gender: z
-      .enum([...Object.values(EGender)] as [string, ...string[]])
-      .optional(),
-    image: z.string().optional(),
-    role: z.enum([...Object.values(ERole)] as [string, ...string[]]).optional(),
-    dateofBirth: z.string().optional(),
-  }),
+const updateAnUserFieldsZodSchema = z.object({
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().email().optional(),
+  gender: z
+    .enum([...Object.values(EGender)] as [string, ...string[]])
+    .optional(),
+  image: z.string().optional(),
+  role: z.enum([...Object.values(ERole)] as [string, ...string[]]).optional(),
+  dateofBirth: z.string().optional(),
 });
 
-export const UserValidation = { createAnUserZodSchema, updateAnUserZodSchema };
+const updateAnUserZodSchema = z.object({
+  body: updateAnUserFieldsZodSchema,
+});
+
+export const UserValidation = {
+  createAnUserZodSchema,
+  updateAnUserFieldsZodSchema,
+  updateAnUserZodSchema,
+};

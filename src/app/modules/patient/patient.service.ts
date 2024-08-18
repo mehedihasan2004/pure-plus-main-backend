@@ -111,20 +111,22 @@ const updateAPatientIncludingUserByUserId = async (
   }: UpdateAPatientIncludingUserByUserIdRequest,
 ): Promise<Patient> => {
   const patient = await prisma.$transaction(async tx => {
-    if (userData)
+    if (userData) {
       await tx.user.update({ where: { id: userId }, data: userData });
+    }
 
     if (patientData) {
-      const updatedPatient = await tx.patient.update({
+      return await tx.patient.update({
         where: { userId },
         data: patientData,
         include: { user: true },
       });
-
-      return updatedPatient;
+    } else {
+      return await tx.patient.findUnique({
+        where: { userId },
+        include: { user: true },
+      });
     }
-
-    return null;
   });
 
   if (!patient) throw new ApiError(500, 'Failed to update the patient!');
