@@ -93,4 +93,19 @@ const getAllAppointments = async (
   return { meta: { total, page, limit }, data: doctors };
 };
 
-export const AppointmentService = { createAnAppointment, getAllAppointments };
+const getAnAppointmentById = async (id: string): Promise<Appointment> => {
+  const appointment = await prisma.appointment.findUnique({
+    where: { id },
+    include: { patient: true, doctor: true },
+  });
+
+  if (!appointment) throw new ApiError(404, 'Appointment not found!');
+
+  return appointment;
+};
+
+export const AppointmentService = {
+  createAnAppointment,
+  getAllAppointments,
+  getAnAppointmentById,
+};

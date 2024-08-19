@@ -15,6 +15,7 @@ router
   )
 
   // READ
-  .get('/', AppointmentController.getAllAppointments);
+  .get('/', AppointmentController.getAllAppointments)
+  .get('/:id', AppointmentController.getAnAppointmentById);
 
 export const AppointmentRoutes = router;
