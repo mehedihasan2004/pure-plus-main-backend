@@ -8,6 +8,7 @@ const userFilterableFields: string[] = [
   'role',
   'dateOfBirth',
 ];
+
 const userSearchableFields: string[] = ['name', 'email'];
 
 export const UserConstant = { userFilterableFields, userSearchableFields };

@@ -7,20 +7,8 @@ import catchAsync from '../../../shared/catch-async';
 import paginationFields from '../../../lib/pagination';
 import sendResponse from '../../../shared/send-response';
 
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.createUser(req.body);
-
-  sendResponse<User>(res, {
-    statusCode: 200,
-    success: true,
-    message: 'User created',
-    data,
-  });
-});
-
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, UserConstant.userFilterableFields);
-
   const paginationOptions = pick(req.query, paginationFields);
 
   const { meta, data } = await UserService.getAllUsers(
@@ -37,19 +25,19 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.getAUserById(req.params.id);
+const getAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.getAnUserById(req.params.id);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'A user retrieved',
+    message: 'User retrieved',
     data,
   });
 });
 
-const updateAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.updateAUserById(req.params.id, req.body);
+const updateAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.updateAnUserById(req.params.id, req.body);
 
   sendResponse<User>(res, {
     statusCode: 200,
@@ -59,21 +47,20 @@ const updateAUserById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteAUserById = catchAsync(async (req: Request, res: Response) => {
-  const data = await UserService.deleteAUserById(req.params.id);
+const deleteAnUserById = catchAsync(async (req: Request, res: Response) => {
+  const data = await UserService.deleteAnUserById(req.params.id);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'A user deleted',
+    message: 'User deleted',
     data,
   });
 });
 
 export const UserController = {
-  createUser,
   getAllUsers,
-  getAUserById,
-  updateAUserById,
-  deleteAUserById,
+  getAnUserById,
+  updateAnUserById,
+  deleteAnUserById,
 };

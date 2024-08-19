@@ -1,20 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import prisma from '../../../lib/prisma';
+import { DB } from '../../../types/prisma';
 import { Prisma, User } from '@prisma/client';
 import { UserConstant } from './user.constant';
 import ApiError from '../../../errors/api-error';
 import { GenericResponse } from '../../../types/common';
-import { CreateUserRequest, UpdateUserRequest, UserFilters } from './user.type';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
+import {
+  UserFilters,
+  CreateAnUserRequest,
+  UpdateAnUserRequest,
+} from './user.type';
 
-const createUser = async (data: CreateUserRequest) => {
-  const isUserExist = await prisma.user.findUnique({ where: { id: data.id } });
+const createAnUser = async (
+  db: DB,
+  data: CreateAnUserRequest,
+): Promise<User> => {
+  const isUserExist = await db.user.findUnique({ where: { id: data.id } });
 
   if (isUserExist) throw new ApiError(409, 'User already exist with this id!');
 
-  const user = await prisma.user.create({ data });
+  const user = await db.user.create({ data });
 
   if (!user) throw new ApiError(500, 'Failed to create user!');
 
@@ -51,9 +59,7 @@ const getAllUsers = async (
     });
   }
 
-  const where: Prisma.UserWhereInput = {
-    AND: pipeline,
-  };
+  const where: Prisma.UserWhereInput = { AND: pipeline };
 
   const users = await prisma.user.findMany({
     where,
@@ -68,7 +74,7 @@ const getAllUsers = async (
   return { meta: { total, page, limit }, data: users };
 };
 
-const getAUserById = async (id: string) => {
+const getAnUserById = async (id: string): Promise<User> => {
   const user = await prisma.user.findUnique({ where: { id } });
 
   if (!user) throw new ApiError(404, 'User not found!');
@@ -76,22 +82,25 @@ const getAUserById = async (id: string) => {
   return user;
 };
 
-const updateAUserById = async (id: string, data: UpdateUserRequest) => {
+const updateAnUserById = async (
+  id: string,
+  data: UpdateAnUserRequest,
+): Promise<User> => {
   const user = await prisma.user.update({ where: { id }, data });
 
   return user;
 };
 
-const deleteAUserById = async (id: string) => {
+const deleteAnUserById = async (id: string): Promise<User> => {
   const user = await prisma.user.delete({ where: { id } });
 
   return user;
 };
 
 export const UserService = {
-  createUser,
+  createAnUser,
   getAllUsers,
-  getAUserById,
-  updateAUserById,
-  deleteAUserById,
+  getAnUserById,
+  updateAnUserById,
+  deleteAnUserById,
 };
