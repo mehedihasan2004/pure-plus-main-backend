@@ -12,6 +12,9 @@ router
     '/',
     validateZodSchema(AppointmentValidation.createAnAppointmentZodSchema),
     AppointmentController.createAnAppointment,
-  );
+  )
+
+  // READ
+  .get('/', AppointmentController.getAllAppointments);
 
 export const AppointmentRoutes = router;

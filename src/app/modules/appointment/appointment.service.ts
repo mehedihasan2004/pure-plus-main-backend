@@ -1,7 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import prisma from '../../../lib/prisma';
-import { Appointment } from '@prisma/client';
 import ApiError from '../../../errors/api-error';
-import { CreateAnAppointmentRequest } from './appointment.type';
+import { Appointment, Prisma } from '@prisma/client';
+import { GenericResponse } from '../../../types/common';
+import { AppointmentConstant } from './appointment.constant';
+import { PaginationOptions } from '../../../types/pagination';
+import calculatePagination from '../../../helpers/pagination';
+import {
+  AppointmentFilters,
+  CreateAnAppointmentRequest,
+} from './appointment.type';
 
 const createAnAppointment = async (
   data: CreateAnAppointmentRequest,
@@ -35,4 +44,53 @@ const createAnAppointment = async (
   return appointment;
 };
 
-export const AppointmentService = { createAnAppointment };
+const getAllAppointments = async (
+  { searchTerm, ...filterData }: AppointmentFilters,
+  paginationOptions: PaginationOptions,
+): Promise<GenericResponse<Appointment[]>> => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    calculatePagination(paginationOptions);
+
+  const pipeline = [];
+
+  if (searchTerm) {
+    pipeline.push({
+      OR: AppointmentConstant.appointmentSearchableFields.map(field => ({
+        [field]: { contains: searchTerm, mode: 'insensitive' },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    pipeline.push({
+      AND: Object.keys(filterData).map(key => {
+        if (AppointmentConstant.appointmentRelationalFields.includes(key)) {
+          return {
+            [AppointmentConstant.appointmentRelationalFieldsMapper[key]]: {
+              userId: (filterData as any)[key],
+            },
+          };
+        } else {
+          return { [key]: { equals: (filterData as any)[key] } };
+        }
+      }),
+    });
+  }
+
+  const where: Prisma.AppointmentWhereInput = { AND: pipeline };
+
+  const doctors = await prisma.appointment.findMany({
+    where,
+    skip,
+    take: limit,
+    orderBy:
+      sortBy && sortOrder ? { [sortBy]: sortOrder } : { updatedAt: 'desc' },
+    include: { doctor: true, patient: true },
+  });
+
+  const total = await prisma.appointment.count({ where });
+
+  return { meta: { total, page, limit }, data: doctors };
+};
+
+export const AppointmentService = { createAnAppointment, getAllAppointments };
