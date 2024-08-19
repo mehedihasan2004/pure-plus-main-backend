@@ -104,8 +104,22 @@ const getAnAppointmentById = async (id: string): Promise<Appointment> => {
   return appointment;
 };
 
+const updateAnAppointmentById = async (
+  id: string,
+  data: Partial<Appointment>,
+): Promise<Appointment> => {
+  const appointment = await prisma.appointment.update({
+    where: { id },
+    data,
+    include: { patient: true, doctor: true },
+  });
+
+  return appointment;
+};
+
 export const AppointmentService = {
   createAnAppointment,
   getAllAppointments,
   getAnAppointmentById,
+  updateAnAppointmentById,
 };

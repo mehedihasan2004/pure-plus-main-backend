@@ -16,6 +16,13 @@ router
 
   // READ
   .get('/', AppointmentController.getAllAppointments)
-  .get('/:id', AppointmentController.getAnAppointmentById);
+  .get('/:id', AppointmentController.getAnAppointmentById)
+
+  // UPDATE
+  .patch(
+    '/:id',
+    validateZodSchema(AppointmentValidation.updateAnAppointmentByIdZodSchema),
+    AppointmentController.updateAnAppointmentById,
+  );
 
 export const AppointmentRoutes = router;

@@ -51,8 +51,25 @@ const getAnAppointmentById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAnAppointmentById = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = await AppointmentService.updateAnAppointmentById(
+      req.params.id,
+      req.body,
+    );
+
+    sendResponse<Appointment>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Appointment updated',
+      data,
+    });
+  },
+);
+
 export const AppointmentController = {
   createAnAppointment,
   getAllAppointments,
   getAnAppointmentById,
+  updateAnAppointmentById,
 };
