@@ -67,9 +67,25 @@ const updateAnAppointmentById = catchAsync(
   },
 );
 
+const deleteAnAppointmentById = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = await AppointmentService.deleteAnAppointmentById(
+      req.params.id,
+    );
+
+    sendResponse<Appointment>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Appointment deleted',
+      data,
+    });
+  },
+);
+
 export const AppointmentController = {
   createAnAppointment,
   getAllAppointments,
   getAnAppointmentById,
   updateAnAppointmentById,
+  deleteAnAppointmentById,
 };

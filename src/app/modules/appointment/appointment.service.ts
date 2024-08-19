@@ -117,9 +117,22 @@ const updateAnAppointmentById = async (
   return appointment;
 };
 
+const deleteAnAppointmentById = async (id: string): Promise<Appointment> => {
+  const appointment = await prisma.appointment.delete({
+    where: { id },
+    include: { patient: true, doctor: true },
+  });
+
+  if (!appointment)
+    throw new ApiError(500, 'Failed to delete the appointment!');
+
+  return appointment;
+};
+
 export const AppointmentService = {
   createAnAppointment,
   getAllAppointments,
   getAnAppointmentById,
   updateAnAppointmentById,
+  deleteAnAppointmentById,
 };

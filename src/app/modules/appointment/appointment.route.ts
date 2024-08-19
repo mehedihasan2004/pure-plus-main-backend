@@ -23,6 +23,9 @@ router
     '/:id',
     validateZodSchema(AppointmentValidation.updateAnAppointmentByIdZodSchema),
     AppointmentController.updateAnAppointmentById,
-  );
+  )
+
+  // DELETE
+  .delete('/:id', AppointmentController.deleteAnAppointmentById);
 
 export const AppointmentRoutes = router;
