@@ -7,7 +7,7 @@ import {
   EAppointmentTimeSlot,
 } from '@prisma/client';
 
-type CreateAnAppointmentRequest = Pick<Appointment, 'date' | 'timeSlot'> & {
+type CreateAnAppointmentRequest = Pick<Appointment, 'name' | 'date' | 'timeSlot' > & {
   doctorId: string;
   patientId: string;
 };
