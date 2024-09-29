@@ -238,6 +238,7 @@ model SuperAdmin {
 model Appointment {
   id String @id @default(cuid())
 
+  name          String
   department    EDepartment
   date          DateTime
   timeSlot      EAppointmentTimeSlot
