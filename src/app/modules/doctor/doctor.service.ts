@@ -4,7 +4,7 @@ import prisma from '../../../lib/prisma';
 import ApiError from '../../../errors/api-error';
 import { UserService } from '../user/user.service';
 import { DoctorConstant } from './doctor.constant';
-import { Doctor, ERole, Prisma } from '@prisma/client';
+import { Doctor, EUserRole, Prisma } from '@prisma/client';
 import { GenericResponse } from '../../../types/common';
 import { PaginationOptions } from '../../../types/pagination';
 import calculatePagination from '../../../helpers/pagination';
@@ -19,7 +19,7 @@ const createADoctor = async (
 ): Promise<Doctor> => {
   const doctor = await prisma.$transaction(async tx => {
     const user = await UserService.createAnUser(tx, {
-      role: ERole.DOCTOR,
+      role: EUserRole.DOCTOR,
       ...data.user,
     });
 
