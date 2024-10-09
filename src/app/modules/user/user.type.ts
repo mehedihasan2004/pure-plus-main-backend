@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { SearchTerm } from '../../../types/common';
 import { UserValidation } from './user.validation';
-import { EGender, ERole, User } from '@prisma/client';
+import { EGender, EUserRole, User } from '@prisma/client';
 
 type CreateAnUserRequest = Pick<User, 'id' | 'name' | 'email' | 'role'>;
 
@@ -11,7 +11,7 @@ type UserFilters = {
   phone?: string;
   email?: string;
   gender?: EGender;
-  role?: ERole;
+  role?: EUserRole;
   dateOfBirth?: string;
 } & SearchTerm;
 

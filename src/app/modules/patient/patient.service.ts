@@ -5,7 +5,7 @@ import ApiError from '../../../errors/api-error';
 import { UserService } from '../user/user.service';
 import { PatientConstant } from './patient.constant';
 import { GenericResponse } from '../../../types/common';
-import { ERole, Patient, Prisma } from '@prisma/client';
+import { EUserRole, Patient, Prisma } from '@prisma/client';
 import calculatePagination from '../../../helpers/pagination';
 import { PaginationOptions } from '../../../types/pagination';
 import {
@@ -25,7 +25,7 @@ const createAnUserWithPatient = async (
 
   const patient = await prisma.$transaction(async tx => {
     const user = await UserService.createAnUser(tx, {
-      role: ERole.PATIENT,
+      role: EUserRole.PATIENT,
       ...data.user,
     });
 

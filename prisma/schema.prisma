@@ -106,7 +106,7 @@ enum EPaymentStatus {
   UNDER_REVIEW
 }
 
-enum ERole {
+enum EUserRole {
   PATIENT
   DOCTOR
   NURSE
@@ -167,7 +167,7 @@ model User {
   email       String    @unique
   gender      EGender?
   image       String?
-  role        ERole     @default(PATIENT)
+  role        EUserRole @default(PATIENT)
   dateOfBirth DateTime?
 
   patient    Patient?

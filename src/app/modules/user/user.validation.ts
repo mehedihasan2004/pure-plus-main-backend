@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EGender, ERole } from '@prisma/client';
+import { EGender, EUserRole } from '@prisma/client';
 
 const createAnUserZodSchema = z.object({
   id: z
@@ -18,9 +18,9 @@ const createAnUserZodSchema = z.object({
     .optional(),
   imgae: z.string().optional(),
   role: z
-    .enum([...Object.values(ERole)] as [string, ...string[]])
+    .enum([...Object.values(EUserRole)] as [string, ...string[]])
     .optional()
-    .default(ERole.PATIENT),
+    .default(EUserRole.PATIENT),
   dateOfBirth: z.string().optional(),
 });
 
@@ -32,7 +32,9 @@ const updateAnUserFieldsZodSchema = z.object({
     .enum([...Object.values(EGender)] as [string, ...string[]])
     .optional(),
   image: z.string().optional(),
-  role: z.enum([...Object.values(ERole)] as [string, ...string[]]).optional(),
+  role: z
+    .enum([...Object.values(EUserRole)] as [string, ...string[]])
+    .optional(),
   dateofBirth: z.string().optional(),
 });
 
